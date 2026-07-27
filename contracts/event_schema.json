@@ -1,0 +1,131 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Company Brain Event Schema",
+  "description": "Unified event model for raw ingestion + AI semantic understanding",
+  "type": "object",
+
+  "required": [
+    "event_id",
+    "raw_type",
+    "event_type",
+    "timestamp",
+    "source",
+    "content"
+  ],
+
+  "properties": {
+
+    "event_id": {
+      "type": "string",
+      "description": "Unique event identifier",
+      "pattern": "^evt_[a-zA-Z0-9_-]+$"
+    },
+
+    "raw_type": {
+      "type": "string",
+      "description": "Original source type before AI processing",
+      "enum": [
+        "slack_message",
+        "email",
+        "meeting_note",
+        "jira_ticket",
+        "document",
+        "notion_page"
+      ]
+    },
+
+    "event_type": {
+      "type": "string",
+      "description": "AI-inferred semantic event type",
+      "enum": [
+        "message",
+        "decision",
+        "task",
+        "question",
+        "document"
+      ]
+    },
+
+    "source": {
+      "type": "string",
+      "description": "System where event originated",
+      "enum": [
+        "slack",
+        "email",
+        "calendar",
+        "jira",
+        "notion",
+        "meeting"
+      ]
+    },
+
+    "actor": {
+      "type": "string",
+      "description": "Person or system that triggered the event"
+    },
+
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the event occurred"
+    },
+
+    "project": {
+      "type": "string",
+      "description": "Related project or context"
+    },
+
+    "content": {
+      "type": "string",
+      "description": "Raw event content (message, note, etc.)"
+    },
+
+    "metadata": {
+      "type": "object",
+      "description": "Additional context data",
+      "properties": {
+        "channel": { "type": "string" },
+        "thread_id": { "type": "string" },
+        "priority": {
+          "type": "string",
+          "enum": ["low", "medium", "high"]
+        }
+      },
+      "additionalProperties": true
+    },
+
+    "ai": {
+      "type": "object",
+      "description": "AI-generated enrichment layer",
+      "properties": {
+
+        "summary": {
+          "type": "string",
+          "description": "Short AI-generated summary of the event"
+        },
+
+        "intent": {
+          "type": "string",
+          "description": "Inferred intent behind the event"
+        },
+
+        "entities": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+
+        "importance_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+
+        "automation_potential": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    }
+  }
+}

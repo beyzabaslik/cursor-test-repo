@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Company Brain — Cursor Bridge Demo</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: Inter, system-ui, sans-serif;
+        background: #0b1020;
+        color: #e5ecff;
+      }
+      body {
+        margin: 0;
+        padding: 2rem;
+      }
+      main {
+        max-width: 960px;
+        margin: 0 auto;
+        display: grid;
+        gap: 1rem;
+      }
+      .card {
+        background: #141b31;
+        border: 1px solid #243055;
+        border-radius: 12px;
+        padding: 1.25rem;
+      }
+      textarea,
+      input,
+      button,
+      select {
+        width: 100%;
+        box-sizing: border-box;
+        margin-top: 0.5rem;
+        border-radius: 8px;
+        border: 1px solid #334067;
+        background: #0f1528;
+        color: inherit;
+        padding: 0.75rem;
+      }
+      button {
+        cursor: pointer;
+        background: #3b82f6;
+        border: none;
+        font-weight: 600;
+      }
+      pre {
+        white-space: pre-wrap;
+        background: #0f1528;
+        padding: 1rem;
+        border-radius: 8px;
+        overflow: auto;
+      }
+      code {
+        color: #93c5fd;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header class="card">
+        <h1>Company Brain Cursor Bridge Demo</h1>
+        <p>Local bridge endpoint with MCP provider layer for Cursor integration.</p>
+      </header>
+
+      <div id="status-root"></div>
+
+      <section class="card">
+        <h2>Chat Completion</h2>
+        <label for="model">Model</label>
+        <select id="model">
+          <option value="cursor-fast">cursor-fast</option>
+          <option value="composer-2.5">composer-2.5</option>
+        </select>
+        <label for="message">Message</label>
+        <textarea id="message" rows="4">Summarize Company Brain bridge status.</textarea>
+        <button id="send-chat">Send via Bridge</button>
+        <pre id="chat-output">Waiting for request...</pre>
+      </section>
+
+      <section class="card">
+        <h2>MCP Tool Call</h2>
+        <label for="tool-name">Tool</label>
+        <input id="tool-name" value="get_context_index" />
+        <button id="call-tool">Call Tool</button>
+        <pre id="tool-output">Waiting for request...</pre>
+      </section>
+    </main>
+
+    <script type="module">
+      import { CursorBridgeClient } from "../lib/cursor-bridge.js";
+      import { renderBridgeStatus } from "../components/bridge-status.js";
+
+      const client = new CursorBridgeClient();
+      const statusRoot = document.getElementById("status-root");
+      const chatOutput = document.getElementById("chat-output");
+      const toolOutput = document.getElementById("tool-output");
+
+      await renderBridgeStatus(statusRoot, client);
+
+      document.getElementById("send-chat").addEventListener("click", async () => {
+        const message = document.getElementById("message").value;
+        const model = document.getElementById("model").value;
+        chatOutput.textContent = "Loading...";
+        const result = await client.chat(message, model);
+        chatOutput.textContent = JSON.stringify(result, null, 2);
+      });
+
+      document.getElementById("call-tool").addEventListener("click", async () => {
+        const name = document.getElementById("tool-name").value;
+        toolOutput.textContent = "Loading...";
+        const result = await client.callTool(name, { task: "Company Brain demo" });
+        toolOutput.textContent = JSON.stringify(result, null, 2);
+      });
+    </script>
+  </body>
+</html>

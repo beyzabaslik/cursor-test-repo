@@ -1,0 +1,33 @@
+version: '3'
+
+tasks:
+  dev:
+    desc: "Start development environment"
+    cmds:
+      - docker-compose -f docker/docker-compose.yml up -d
+
+  dev:down:
+    desc: "Stop development environment"
+    cmds:
+      - docker-compose -f docker/docker-compose.yml down
+
+  backend:
+    desc: "Run backend locally"
+    cmds:
+      - cd backend && uvicorn app.main:app --reload
+
+  backend:install:
+    desc: "Install backend dependencies"
+    cmds:
+      - cd backend && pip install -r requirements.txt
+
+  lint:
+    desc: "Run code linting"
+    cmds:
+      - black backend/
+      - isort backend/
+
+  test:
+    desc: "Run tests"
+    cmds:
+      - cd backend && pytest tests/
