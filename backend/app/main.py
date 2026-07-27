@@ -32,9 +32,9 @@ app.include_router(process.router)
 app.include_router(automation.router)
 app.include_router(cursor_bridge.router)
 
-_frontend_pages = Path(__file__).resolve().parents[2] / "frontend" / "pages"
-if _frontend_pages.exists():
-    app.mount("/demo", StaticFiles(directory=str(_frontend_pages), html=True), name="demo")
+_frontend_root = Path(__file__).resolve().parents[2] / "frontend"
+if _frontend_root.exists():
+    app.mount("/demo", StaticFiles(directory=str(_frontend_root), html=True), name="demo")
 
 
 @app.get("/")
