@@ -1,0 +1,73 @@
+{
+  "endpoints": {
+    "chat": {
+      "method": "POST",
+      "path": "/chat",
+      "input": {
+        "query": "string",
+        "user_id": "string"
+      },
+      "output": {
+        "answer": "string",
+        "sources": "array",
+        "confidence": "number"
+      }
+    },
+
+    "ingest": {
+      "method": "POST",
+      "path": "/ingest",
+      "input": {
+        "source": "slack | notion | meeting",
+        "data": "object"
+      },
+      "output": {
+        "status": "string",
+        "events_created": "number"
+      }
+    },
+
+    "process": {
+      "method": "GET",
+      "path": "/process",
+      "input": {
+        "project_id": "string (optional)"
+      },
+      "output": {
+        "nodes": "array",
+        "edges": "array",
+        "summary": "string"
+      }
+    },
+
+    "automation": {
+      "method": "GET",
+      "path": "/automation",
+      "input": {},
+      "output": {
+        "opportunities": [
+          {
+            "title": "string",
+            "description": "string",
+            "impact_score": "number",
+            "effort_saved_hours": "number"
+          }
+        ]
+      }
+    },
+
+    "cursor_bridge": {
+      "method": "POST",
+      "path": "/api/cursor-bridge/v1/chat/completions",
+      "input": {
+        "model": "string",
+        "messages": "array"
+      },
+      "output": {
+        "choices": "array",
+        "model": "string"
+      }
+    }
+  }
+}
+
