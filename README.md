@@ -119,7 +119,7 @@ The API will be available at `http://localhost:8000`
 - `GET /api/cursor-bridge/v1/models` - OpenAI-compatible model list
 - `POST /api/cursor-bridge/v1/chat/completions` - OpenAI-compatible chat endpoint
 
-Demo UI: `http://localhost:8000/demo/`
+Demo UI: `http://localhost:8000/demo/` (YC dashboard) · Bridge console: `http://localhost:8000/demo/pages/bridge.html`
 
 ## 🔧 Configuration
 
